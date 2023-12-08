@@ -1,0 +1,31 @@
+name: Build with CMake
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ gcc flex bison python2 make pkg-config
+
+    - name: Install Python 2.x
+      run: |
+        sudo apt-add-repository ppa:deadsnakes/ppa
+        sudo apt-get update
+        sudo apt-get install -y python2
+
+    - name: Create build directory and compile
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
